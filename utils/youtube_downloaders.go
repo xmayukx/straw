@@ -3,12 +3,13 @@ package utils
 import (
 	"io"
 	"log"
+
 	"os"
 
 	"github.com/kkdai/youtube/v2"
 )
 
-func YoutubeDownload(videoID string) string {
+func YoutubeDownload(videoID string, userID string) string {
 
 	client := youtube.Client{}
 
@@ -23,7 +24,7 @@ func YoutubeDownload(videoID string) string {
 		panic(err.Error())
 	}
 
-	filePath := `C:\Users\hazar\Downloads\strawvids\video.mp4`
+	filePath := `C:\Users\hazar\Downloads\strawvids\` + video.ID + `_` + userID + `.mp4`
 	file, err := os.Create(filePath)
 	if err != nil {
 		panic(err)

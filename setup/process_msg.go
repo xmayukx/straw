@@ -1,8 +1,9 @@
 package setup
 
 import (
-	"io/ioutil"
-	"log"
+	"fmt"
+	"io"
+	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/xmayukx/straw/handlers"
@@ -38,20 +39,38 @@ func ProcessMsg(msgQueue *chan tgbotapi.MessageConfig) {
 			}
 		} else {
 
-			filePath := handlers.VideoHandler(update.Message.Text)
+			filePath := handlers.VideoHandler(update.Message.Text, bot.Self.FirstName)
 
-			videoBytes, err := ioutil.ReadFile(filePath)
+			file, err := os.Open(filePath)
 			if err != nil {
-				log.Panic(err)
+				fmt.Println("Error opening file ", err.Error())
+				return
+			}
+
+			buffer := make([]byte, 1024)
+
+			var fileBytes []byte
+
+			for {
+				n, err := file.Read(buffer)
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					fmt.Println("Error reading file ", err.Error())
+					return
+				}
+
+				fileBytes = append(fileBytes, buffer[:n]...)
 			}
 
 			videoConfig := tgbotapi.NewVideo(update.Message.Chat.ID, tgbotapi.FileBytes{
-				Name:  "video.mp4",
-				Bytes: videoBytes,
+				Name:  file.Name() + `.mp4`,
+				Bytes: fileBytes,
 			})
-			videoConfig.Caption = "Here's your video!"
+			file.Close()
+			videoConfig.Caption = "🎥 Here's your video!"
 			videoConfig.ReplyToMessageID = update.Message.MessageID
-
 			if _, err := bot.Send(videoConfig); err != nil {
 				msg.Text = "Something went wrong."
 				bot.Send(msg)
