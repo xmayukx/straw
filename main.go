@@ -6,7 +6,8 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/joho/godotenv"
-	"github.com/xmayukx/straw/setup"
+	"github.com/xmayukx/straw/cmd"
+	setup "github.com/xmayukx/straw/cmd"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func main() {
 	updateConfig.Timeout = 20
 
 	msgQueue := make(chan tgbotapi.MessageConfig)
-	go setup.ProcessMsg(&msgQueue)
+	go cmd.ProcessMsg(&msgQueue)
 
 	updates := bot.GetUpdatesChan(updateConfig)
 
@@ -36,7 +37,7 @@ func main() {
 		}
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 		msg.ReplyToMessageID = update.Message.MessageID
-		setup.Update(&update)
+		cmd.Update(&update)
 		msgQueue <- msg
 
 	}

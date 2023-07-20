@@ -1,4 +1,4 @@
-package setup
+package cmd
 
 import (
 	"fmt"
@@ -39,6 +39,11 @@ func ProcessMsg(msgQueue *chan tgbotapi.MessageConfig) {
 			}
 		} else {
 
+			msg.Text = "⬇️Your video is downloading..."
+			if _, err := bot.Send(msg); err != nil {
+				msg.Text = "Something went wrong."
+				bot.Send(msg)
+			}
 			filePath := handlers.VideoHandler(update.Message.Text, bot.Self.FirstName)
 
 			file, err := os.Open(filePath)

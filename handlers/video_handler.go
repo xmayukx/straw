@@ -11,7 +11,7 @@ import (
 
 func VideoHandler(url string, userID string) string {
 
-	if strings.Contains(url, "youtu.be") {
+	if strings.Contains(url, "youtu.be") || strings.Contains(url, "youtube") {
 		videoID, err := youtube.ExtractVideoID(url)
 		if err != nil {
 			log.Panic(err)

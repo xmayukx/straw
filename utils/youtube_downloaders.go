@@ -24,7 +24,7 @@ func YoutubeDownload(videoID string, userID string) string {
 		panic(err.Error())
 	}
 
-	filePath := `C:\Users\hazar\Downloads\strawvids\` + video.ID + `_` + userID + `.mp4`
+	filePath := `C:\Users\hazar\Downloads\strawvids\` + `youtube_` + video.ID + `_` + userID + `.mp4`
 	file, err := os.Create(filePath)
 	if err != nil {
 		panic(err)
