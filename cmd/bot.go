@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/xmayukx/straw/handlers"
@@ -12,7 +13,7 @@ import (
 var bot *tgbotapi.BotAPI
 var update *tgbotapi.Update
 
-func Update(u *tgbotapi.Update) {
+func UpdateInstance(u *tgbotapi.Update) {
 	update = u
 }
 
@@ -37,7 +38,7 @@ func ProcessMsg(msgQueue *chan tgbotapi.MessageConfig) {
 				msg.Text = "Something went wrong."
 				bot.Send(msg)
 			}
-		} else {
+		} else if strings.Contains(update.Message.Text, "https") || strings.Contains(update.Message.Text, "http") || strings.Contains(update.Message.Text, "www") {
 
 			msg.Text = "⬇️Your video is downloading..."
 			if _, err := bot.Send(msg); err != nil {
@@ -77,6 +78,12 @@ func ProcessMsg(msgQueue *chan tgbotapi.MessageConfig) {
 			videoConfig.Caption = "🎥 Here's your video!"
 			videoConfig.ReplyToMessageID = update.Message.MessageID
 			if _, err := bot.Send(videoConfig); err != nil {
+				msg.Text = "Something went wrong."
+				bot.Send(msg)
+			}
+		} else {
+			msg.Text = "Please provide a valid URL or cammand (/start or /help)."
+			if _, err := bot.Send(msg); err != nil {
 				msg.Text = "Something went wrong."
 				bot.Send(msg)
 			}

@@ -16,7 +16,7 @@ func VideoHandler(url string, userID string) string {
 		if err != nil {
 			log.Panic(err)
 		}
-		return utils.YoutubeDownload(videoID, userID)
+		return utils.YoutubeDownload(videoID)
 
 	} else if strings.Contains(url, "instagram") {
 		return "Coming Soon!"

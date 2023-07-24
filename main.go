@@ -7,10 +7,10 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/joho/godotenv"
 	"github.com/xmayukx/straw/cmd"
-	setup "github.com/xmayukx/straw/cmd"
 )
 
 func main() {
+
 	err := godotenv.Load()
 	if err != nil {
 		panic(err)
@@ -22,7 +22,7 @@ func main() {
 
 	bot.Debug = false
 	fmt.Print(bot.GetMe())
-	setup.BotInstance(bot)
+	cmd.BotInstance(bot)
 	updateConfig := tgbotapi.NewUpdate(0)
 	updateConfig.Timeout = 20
 
@@ -37,9 +37,8 @@ func main() {
 		}
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 		msg.ReplyToMessageID = update.Message.MessageID
-		cmd.Update(&update)
+		cmd.UpdateInstance(&update)
 		msgQueue <- msg
-
 	}
 
 }
