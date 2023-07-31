@@ -16,7 +16,7 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-
+downloads/
 # dotenv environment variable files
 .env
 .env.development.local

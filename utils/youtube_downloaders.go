@@ -1,10 +1,11 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"log"
-
 	"os"
+	"path/filepath"
 
 	"github.com/kkdai/youtube/v2"
 )
@@ -24,7 +25,18 @@ func YoutubeDownload(videoID string) string {
 		panic(err.Error())
 	}
 
-	filePath := `C:\Users\hazar\Downloads\strawvids\` + `youtube_` + video.ID + `_` + `.mp4`
+	currentDir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error: ", err.Error())
+	}
+	downloadsDir := filepath.Join(currentDir, "downloads")
+
+	if err := os.MkdirAll(downloadsDir, 0755); err != nil {
+		fmt.Println("Error: ", err.Error())
+	}
+
+	filePath := filepath.Join(downloadsDir, "youtube_"+video.ID+".mp4")
+
 	file, err := os.Create(filePath)
 	if err != nil {
 		panic(err)
