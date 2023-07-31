@@ -21,15 +21,19 @@ To get your Telegram bot token, you'll need to create a new bot on Telegram. Fol
    git clone https://github.com/xmayukx/straw.git
    cd straw
    ```
-2. Now create a file and name it `.env` to store your bot token. In terminal write the command:
+2. Install dependencies:
+   ```
+   go mod tidy
+   ```
+3. Now create a file and name it `.env` to store your bot token. In terminal write the command:
    ```
    touch .env
    ```
-3. In `.env` set the bot token like this:
+4. In `.env` set the bot token like this:
    ```
    TGBOTAPIKEY=<YOUR_TOKEN>
    ```
-4. Now open the terminal and type the following command to spin up the bot locally:
+5. Now open the terminal and type the following command to spin up the bot locally:
      ````
      go run main.go
      ````
